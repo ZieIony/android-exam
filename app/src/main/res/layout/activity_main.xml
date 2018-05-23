@@ -5,7 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.upraxistest.franklindeasis.MainActivity">
-se
     <ListView
         android:id="@+id/listview"
         android:scrollbars="vertical"

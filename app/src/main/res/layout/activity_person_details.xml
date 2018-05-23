@@ -2,55 +2,55 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_margin="8dp">
+    android:layout_margin="@dimen/small_margin">
 
     <TextView
         android:id="@+id/tv_firstname"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="8dp"
+        android:layout_margin="@dimen/small_margin"
         android:text="First Name: "/>
 
     <TextView
         android:id="@+id/tv_lastname"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="8dp"
+        android:layout_margin="@dimen/small_margin"
         android:text="Last Name: "/>
 
     <TextView
         android:id="@+id/tv_birthdate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="8dp"
+        android:layout_margin="@dimen/small_margin"
         android:text="Birthdate: "/>
 
     <TextView
         android:id="@+id/tv_age"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="8dp"
+        android:layout_margin="@dimen/small_margin"
         android:text="Age: "/>
 
     <TextView
         android:id="@+id/tv_emailaddress"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="8dp"
+        android:layout_margin="@dimen/small_margin"
         android:text="Email Address: "/>
 
     <TextView
         android:id="@+id/tv_mobilenumber"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="8dp"
+        android:layout_margin="@dimen/small_margin"
         android:text="Mobile Number: "/>
 
     <TextView
         android:id="@+id/tv_address"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="8dp"
+        android:layout_margin="@dimen/small_margin"
         android:text="Address: "/>
 
 
@@ -59,21 +59,21 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Contact Person: "
-        android:layout_margin="8dp"/>
+        android:layout_margin="@dimen/small_margin"/>
 
     <TextView
         android:id="@+id/tv_contactpersonmobilenumber"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Contact Person Number: "
-        android:layout_margin="8dp"/>
+        android:layout_margin="@dimen/small_margin"/>
 
     <Button
         android:id="@+id/back"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Back"
-        android:layout_margin="8dp"
+        android:layout_margin="@dimen/small_margin"
         android:onClick="backPress"/>
 
 </LinearLayout>
