@@ -32,9 +32,10 @@ import java.util.concurrent.ExecutionException;
 public class MainActivity extends AppCompatActivity {
 
     private final static String FAILED = "FAILED";
+    private final static String CACHE_FILE_NAME = "JSONData";
     private ArrayList<PersonClass> personClassArrayList = new ArrayList<>();
     private ListView listView;
-    String JSONData;
+    private String JSONData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,18 +47,23 @@ public class MainActivity extends AppCompatActivity {
 
         DownloadTask task = new DownloadTask();
         JSONData = null;
-        //JSON file manually generated from http://myjson.com/
-        String url = "https://api.myjson.com/bins/8ek4q";
 
-        File cacheFile = new File(getCacheDir(), "JSONData");
+        /*
+            This program assumes that all data retrieved from the URL are correctly formatted and has no invalid data
+         */
+
+        //I manually generated this JSON file from http://myjson.com/
+        String url = "https://api.myjson.com/bins/142e2y";
+
+        File cacheFile = new File(getCacheDir(), CACHE_FILE_NAME);
 
         if (cacheFile.exists()){
 
-            Log.i("Cache", "Cache");
+            Log.i("MainActivity", "Load from Cache");
 
             try {
 
-                JSONData = retreiveJSONDatafromCache();
+                JSONData = retreiveJSONDatafromCache(cacheFile);
 
             } catch (IOException e) {
 
@@ -71,15 +77,18 @@ public class MainActivity extends AppCompatActivity {
 
         } else {
 
-            Log.i("Load", "Load");
+            Log.i("MainActivity", "Load from Internet");
+
             try {
 
                 ProgressDialog loadingDialog = new ProgressDialog(this);
                 loadingDialog.show();
                 loadingDialog.setTitle("Loading Person list");
 
+                //Retrieve data from URL provided
                 JSONData = task.execute(url).get();
-                saveJSONDatatoCache(JSONData);
+                //Save JSON to Cache
+                saveJSONDatatoCache(JSONData, cacheFile);
 
                 loadingDialog.dismiss();
 
@@ -96,15 +105,14 @@ public class MainActivity extends AppCompatActivity {
             }
 
         }
-
-
-
+        //If DownloadTask was successful, used .equals() because of String comparison
         if(!JSONData.equals("Failed")){
 
             try {
 
                 JSONArray jsonArrayPersonList = new JSONArray(JSONData);
 
+                //Loop in JSONArray and retrieve Person Objects
                 for(int x = 0; x < jsonArrayPersonList.length(); x++){
 
                     JSONObject jsonPerson = jsonArrayPersonList.getJSONObject(x);
@@ -112,16 +120,10 @@ public class MainActivity extends AppCompatActivity {
 
                 }
 
-            } catch (JSONException e) {
-
-                e.printStackTrace();
-                Log.e("JSONException", e.toString());
-
-            } finally {
-
                 final MyAdapter adapter = new MyAdapter(this, personClassArrayList);
                 listView.setAdapter(adapter);
 
+                //OnClick of item in List View would navigate the user to a new Activity containing the specific details of the Person selected
                 listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -130,6 +132,11 @@ public class MainActivity extends AppCompatActivity {
                         startActivity(myIntent);
                     }
                 });
+
+            } catch (JSONException e) {
+
+                e.printStackTrace();
+                Log.e("JSONException", e.toString());
 
             }
 
@@ -140,16 +147,14 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void saveJSONDatatoCache(String JSONData) throws IOException {
-        File file = new File(getCacheDir(),"JSONData");
+    private void saveJSONDatatoCache(String JSONData, File file) throws IOException {
         FileOutputStream fileOS = new FileOutputStream(file);
         ObjectOutput out = new ObjectOutputStream(fileOS);
         out.writeObject(JSONData);
         out.close();
     }
 
-    public String retreiveJSONDatafromCache() throws IOException, ClassNotFoundException {
-        File file = new File(getCacheDir(),"JSONData");
+    private String retreiveJSONDatafromCache(File file) throws IOException, ClassNotFoundException {
         FileInputStream fileIS = new FileInputStream(file);
         ObjectInputStream in = new ObjectInputStream(fileIS);
         String JSONData = (String) in.readObject();
@@ -157,7 +162,8 @@ public class MainActivity extends AppCompatActivity {
         return JSONData;
     }
 
-    public PersonClass convertJSONObjectToPerson(JSONObject jsonPerson) throws JSONException {
+    //Converting JSONObject to PersonClass
+    private PersonClass convertJSONObjectToPerson(JSONObject jsonPerson) throws JSONException {
 
         String firstName = jsonPerson.getString("firstname");
         String lastName = jsonPerson.getString("lastname");
@@ -198,6 +204,7 @@ public class MainActivity extends AppCompatActivity {
 
                 convertView = getLayoutInflater().inflate(R.layout.item_person, parent, false);
 
+                //Set the row to display the First and Last Name of the Person
                 TextView tv_name = (TextView) convertView.findViewById(R.id.tv_name);
                 String firstName = personClassArrayList.get(position).getFirstName();
                 String lastName = personClassArrayList.get(position).getLastName();

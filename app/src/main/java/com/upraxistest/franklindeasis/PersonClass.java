@@ -72,7 +72,7 @@ public class PersonClass implements Parcelable{
         dateOfBirth.set(Calendar.DAY_OF_MONTH, day);
 
         if (dateOfBirth.after(now)) {
-            throw new IllegalArgumentException("Can't be born in the future");
+            throw new IllegalArgumentException("Invalid Date of Birth");
         }
         int year1 = now.get(Calendar.YEAR);
         int year2 = dateOfBirth.get(Calendar.YEAR);

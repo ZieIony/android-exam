@@ -30,6 +30,7 @@ public class PersonDetailsActivity  extends AppCompatActivity{
         tv_contactperson = (TextView) findViewById(R.id.tv_contactperson);
         tv_contactpersonmobilenumber= (TextView) findViewById(R.id.tv_contactpersonmobilenumber);
 
+        //Get Person Data from Source Activity
         Bundle data = getIntent().getExtras();
         PersonClass person = (PersonClass) data.getParcelable("person");
 
@@ -40,7 +41,7 @@ public class PersonDetailsActivity  extends AppCompatActivity{
         tv_birthdate.setText(tv_birthdate.getText() + person.getBirthdate());
         tv_emailaddress.setText(tv_emailaddress.getText() + person.getEmailAddress());
         tv_mobilenumber.setText(tv_mobilenumber.getText() + person.getMobileNumber());
-        tv_address.setText(tv_address.getText() + person.getEmailAddress());
+        tv_address.setText(tv_address.getText() + person.getAddress());
         tv_contactperson.setText(tv_contactperson.getText() + person.getContactPerson());
         tv_contactpersonmobilenumber.setText(tv_contactpersonmobilenumber.getText() + person.getContactPersonPhoneNumber());
 
