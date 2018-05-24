@@ -17,10 +17,10 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutput;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
-import java.util.concurrent.ExecutionException;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import io.reactivex.disposables.CompositeDisposable;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -36,9 +36,9 @@ public class MainActivity extends AppCompatActivity {
     @BindView(R.id.swipeRefresh)
     SwipeRefreshLayout swipeRefreshLayout;
 
-    DownloadTask task;
-
     MyApi api;
+
+    CompositeDisposable disposables = new CompositeDisposable();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,13 +49,18 @@ public class MainActivity extends AppCompatActivity {
         Log.i("onCreate", "onCreate");
 
         api = new MyApi();
-        task = new DownloadTask(api);
 
         cacheFile = new File(getCacheDir(), CACHE_FILE_NAME);
 
         swipeRefreshLayout.setOnRefreshListener(this::loadData);
 
         initData();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        disposables.dispose();
     }
 
     private void initData() {
@@ -83,30 +88,20 @@ public class MainActivity extends AppCompatActivity {
     private void loadData() {
         Log.i("MainActivity", "Load from Internet");
 
-        try {
+        swipeRefreshLayout.setRefreshing(true);
 
-            swipeRefreshLayout.setRefreshing(true);
-
-            //Retrieve data from URL provided
-            ArrayList<Person> personArrayList = task.execute().get();
+        //Retrieve data from URL provided
+        disposables.add(api.getData().subscribe(personArrayList -> {
 
             swipeRefreshLayout.setRefreshing(false);
 
-            if (personArrayList !=null) {
-                //Save JSON to Cache
-                saveDataToCache(personArrayList, cacheFile);
-                setupData(personArrayList);
-            } else {
-                Toast.makeText(this, "Failed while loading Person List", Toast.LENGTH_SHORT).show();
-            }
+            saveDataToCache(personArrayList, cacheFile);
+            setupData(personArrayList);
+        }, throwable -> {
+            swipeRefreshLayout.setRefreshing(false);
 
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+            Toast.makeText(MainActivity.this, "Failed while loading Person List", Toast.LENGTH_SHORT).show();
+        }));
     }
 
     private void setupData(ArrayList<Person> personArrayList) {
