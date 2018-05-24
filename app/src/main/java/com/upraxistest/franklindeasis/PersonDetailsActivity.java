@@ -3,7 +3,6 @@ package com.upraxistest.franklindeasis;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.view.View;
 import android.widget.TextView;
 
 import butterknife.BindView;
@@ -63,9 +62,5 @@ public class PersonDetailsActivity extends AppCompatActivity {
         tv_address.setText(tv_address.getText() + person.getAddress());
         tv_contactPerson.setText(tv_contactPerson.getText() + person.getContactPerson());
         tv_contactPersonMobileNumber.setText(tv_contactPersonMobileNumber.getText() + person.getContactPersonPhoneNumber());
-    }
-
-    public void backPress(View v) {
-        this.onBackPressed();
     }
 }
