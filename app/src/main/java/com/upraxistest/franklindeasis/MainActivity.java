@@ -22,21 +22,28 @@ import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class MainActivity extends AppCompatActivity {
 
     private final static String FAILED = "FAILED";
     private final static String CACHE_FILE_NAME = "JSONData";
+
     private ArrayList<PersonClass> personClassArrayList = new ArrayList<>();
-    private ListView listView;
     private String JSONData;
+
+    @BindView(R.id.listview)
+    ListView listView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        ButterKnife.bind(this);
+
         Log.i("onCreate", "onCreate");
 
-        listView = findViewById(R.id.listview);
 
         DownloadTask task = new DownloadTask();
         JSONData = null;
@@ -157,7 +164,7 @@ public class MainActivity extends AppCompatActivity {
 
         String firstName = jsonPerson.getString("firstname");
         String lastName = jsonPerson.getString("lastname");
-        String birthdate = jsonPerson.getString("birthdate");
+        String birthDate = jsonPerson.getString("birthdate");
         String emailAddress = jsonPerson.getString("emailadd");
         String mobileNumber = jsonPerson.getString("mobilenumber");
         String address = jsonPerson.getString("address");
@@ -166,7 +173,7 @@ public class MainActivity extends AppCompatActivity {
 
         return new PersonClass(firstName,
                 lastName,
-                birthdate,
+                birthDate,
                 emailAddress,
                 mobileNumber,
                 address,
