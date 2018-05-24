@@ -8,6 +8,8 @@ import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static com.upraxistest.franklindeasis.MainActivity.EXTRA_PERSON;
+
 /**
  * Created by Franklin on 5/22/2018.
  */
@@ -50,7 +52,7 @@ public class PersonDetailsActivity extends AppCompatActivity {
 
         //Get Person Data from Source Activity
         Bundle data = getIntent().getExtras();
-        PersonClass person = (PersonClass) data.getSerializable("person");
+        PersonClass person = (PersonClass) data.getSerializable(EXTRA_PERSON);
 
         //For simplicity I used the same TextView and just appended the value
         tv_firstName.setText(tv_firstName.getText() + person.firstName);

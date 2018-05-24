@@ -29,6 +29,7 @@ public class MainActivity extends AppCompatActivity {
 
     private final static String FAILED = "FAILED";
     private final static String CACHE_FILE_NAME = "JSONData";
+    public static final String EXTRA_PERSON = "person";
 
     private ArrayList<PersonClass> personClassArrayList = new ArrayList<>();
     private String JSONData;
@@ -126,7 +127,7 @@ public class MainActivity extends AppCompatActivity {
                 //OnClick of item in List View would navigate the user to a new Activity containing the specific details of the Person selected
                 listView.setOnItemClickListener((parent, view, position, id) -> {
                     Intent myIntent = new Intent(MainActivity.this, PersonDetailsActivity.class);
-                    myIntent.putExtra("person", personClassArrayList.get(position));
+                    myIntent.putExtra(EXTRA_PERSON, personClassArrayList.get(position));
                     startActivity(myIntent);
                 });
 
