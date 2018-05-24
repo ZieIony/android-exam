@@ -10,62 +10,62 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/small_margin"
-        android:text="First Name: "/>
+        android:text="@string/first_name"/>
 
     <TextView
         android:id="@+id/tv_lastname"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/small_margin"
-        android:text="Last Name: "/>
+        android:text="@string/last_name"/>
 
     <TextView
         android:id="@+id/tv_birthdate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/small_margin"
-        android:text="Birthdate: "/>
+        android:text="@string/birthdate"/>
 
     <TextView
         android:id="@+id/tv_age"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/small_margin"
-        android:text="Age: "/>
+        android:text="@string/age"/>
 
     <TextView
         android:id="@+id/tv_emailaddress"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/small_margin"
-        android:text="Email Address: "/>
+        android:text="@string/email_address"/>
 
     <TextView
         android:id="@+id/tv_mobilenumber"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/small_margin"
-        android:text="Mobile Number: "/>
+        android:text="@string/mobile_number"/>
 
     <TextView
         android:id="@+id/tv_address"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/small_margin"
-        android:text="Address: "/>
+        android:text="@string/address"/>
 
     <TextView
         android:id="@+id/tv_contactperson"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/small_margin"
-        android:text="Contact Person: "/>
+        android:text="@string/contact_person"/>
 
     <TextView
         android:id="@+id/tv_contactpersonmobilenumber"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/small_margin"
-        android:text="Contact Person Number: "/>
+        android:text="@string/contact_person_number"/>
 
 </LinearLayout>

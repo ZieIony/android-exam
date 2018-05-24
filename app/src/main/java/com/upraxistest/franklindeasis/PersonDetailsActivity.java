@@ -55,14 +55,14 @@ public class PersonDetailsActivity extends AppCompatActivity {
         PersonClass person = (PersonClass) data.getSerializable(EXTRA_PERSON);
 
         //For simplicity I used the same TextView and just appended the value
-        tv_firstName.setText(tv_firstName.getText() + person.firstName);
-        tv_lastName.setText(tv_lastName.getText() + person.lastName);
-        tv_age.setText(tv_age.getText() + String.valueOf(person.age));
-        tv_birthDate.setText(tv_birthDate.getText() + person.birthDate);
-        tv_emailAddress.setText(tv_emailAddress.getText() + person.emailAddress);
-        tv_mobileNumber.setText(tv_mobileNumber.getText() + person.mobileNumber);
-        tv_address.setText(tv_address.getText() + person.address);
-        tv_contactPerson.setText(tv_contactPerson.getText() + person.contactPerson);
-        tv_contactPersonMobileNumber.setText(tv_contactPersonMobileNumber.getText() + person.contactPersonPhoneNumber);
+        tv_firstName.setText(getResources().getString(R.string.first_name, person.firstName));
+        tv_lastName.setText(getResources().getString(R.string.last_name, person.lastName));
+        tv_age.setText(getResources().getString(R.string.age, person.age));
+        tv_birthDate.setText(getResources().getString(R.string.birthdate, person.birthDate));
+        tv_emailAddress.setText(getResources().getString(R.string.email_address, person.emailAddress));
+        tv_mobileNumber.setText(getResources().getString(R.string.mobile_number, person.mobileNumber));
+        tv_address.setText(getResources().getString(R.string.address, person.address));
+        tv_contactPerson.setText(getResources().getString(R.string.contact_person, person.contactPerson));
+        tv_contactPersonMobileNumber.setText(getResources().getString(R.string.contact_person_number, person.contactPersonPhoneNumber));
     }
 }

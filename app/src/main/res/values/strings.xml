@@ -1,3 +1,15 @@
 <resources>
     <string name="app_name">UpraxisTest_FranklinDeAsis</string>
+
+    <string name="first_last_name">%s %s</string>
+
+    <string name="first_name">First Name: %s</string>
+    <string name="last_name">Last Name: %s</string>
+    <string name="birthdate">Birthdate: %s</string>
+    <string name="age">Age: %d</string>
+    <string name="email_address">Email Address: %s</string>
+    <string name="mobile_number">Mobile Number: %s</string>
+    <string name="address">Address: %s</string>
+    <string name="contact_person">Contact Person: %s</string>
+    <string name="contact_person_number">Contact Person Number: %s</string>
 </resources>

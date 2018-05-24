@@ -27,7 +27,7 @@ class MyAdapter extends BaseAdapter {
             TextView tv_name = convertView.findViewById(R.id.tv_name);
             String firstName = personClassArrayList.get(position).firstName;
             String lastName = personClassArrayList.get(position).lastName;
-            tv_name.setText(firstName + " " + lastName);
+            tv_name.setText(parent.getResources().getString(R.string.first_last_name, firstName, lastName));
 
         }
         return convertView;
