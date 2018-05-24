@@ -41,12 +41,11 @@ public class MainActivity extends AppCompatActivity {
     @BindView(R.id.swipeRefresh)
     SwipeRefreshLayout swipeRefreshLayout;
 
-    DownloadTask task = new DownloadTask();
+    DownloadTask task;
 
     Gson gson;
 
-    //I manually generated this JSON file from http://myjson.com/
-    String url = "https://api.myjson.com/bins/142e2y";
+    MyApi api;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +56,8 @@ public class MainActivity extends AppCompatActivity {
         Log.i("onCreate", "onCreate");
 
         initGson();
+        api = new MyApi();
+        task = new DownloadTask(api);
 
         cacheFile = new File(getCacheDir(), CACHE_FILE_NAME);
 
@@ -101,7 +102,7 @@ public class MainActivity extends AppCompatActivity {
             swipeRefreshLayout.setRefreshing(true);
 
             //Retrieve data from URL provided
-            String jsonData = task.execute(url).get();
+            String jsonData = task.execute().get();
             //Save JSON to Cache
             saveJSONDataToCache(jsonData, cacheFile);
 
