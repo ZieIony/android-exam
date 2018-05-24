@@ -10,7 +10,7 @@ import java.util.Date;
  * Created by Franklin on 5/22/2018.
  */
 
-public class PersonClass implements Serializable {
+public class Person implements Serializable {
     public String firstName;
     public String lastName;
     public String birthDate;
@@ -21,7 +21,7 @@ public class PersonClass implements Serializable {
     public String contactPerson;
     public String contactPersonPhoneNumber;
 
-    public PersonClass(String firstName, String lastName, String birthday, String emailAddress, String mobileNumber, String address, String contactPerson, String contactPersonPhoneNumber) {
+    public Person(String firstName, String lastName, String birthday, String emailAddress, String mobileNumber, String address, String contactPerson, String contactPersonPhoneNumber) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.birthDate = birthday;

@@ -52,7 +52,7 @@ public class PersonDetailsActivity extends AppCompatActivity {
 
         //Get Person Data from Source Activity
         Bundle data = getIntent().getExtras();
-        PersonClass person = (PersonClass) data.getSerializable(EXTRA_PERSON);
+        Person person = (Person) data.getSerializable(EXTRA_PERSON);
 
         //For simplicity I used the same TextView and just appended the value
         tv_firstName.setText(getResources().getString(R.string.first_name, person.firstName));

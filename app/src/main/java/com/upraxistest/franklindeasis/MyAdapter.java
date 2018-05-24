@@ -10,10 +10,10 @@ import java.util.ArrayList;
 
 class MyAdapter extends BaseAdapter {
 
-    private ArrayList<PersonClass> personClassArrayList;
+    private ArrayList<Person> personArrayList;
 
-    public MyAdapter(ArrayList<PersonClass> personClassArrayList) {
-        this.personClassArrayList = personClassArrayList;
+    public MyAdapter(ArrayList<Person> personArrayList) {
+        this.personArrayList = personArrayList;
     }
 
     @Override
@@ -25,8 +25,8 @@ class MyAdapter extends BaseAdapter {
 
             //Set the row to display the First and Last Name of the Person
             TextView tv_name = convertView.findViewById(R.id.tv_name);
-            String firstName = personClassArrayList.get(position).firstName;
-            String lastName = personClassArrayList.get(position).lastName;
+            String firstName = personArrayList.get(position).firstName;
+            String lastName = personArrayList.get(position).lastName;
             tv_name.setText(parent.getResources().getString(R.string.first_last_name, firstName, lastName));
 
         }
@@ -36,12 +36,12 @@ class MyAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
-        return personClassArrayList.size();
+        return personArrayList.size();
     }
 
     @Override
     public Object getItem(int position) {
-        return personClassArrayList.get(position);
+        return personArrayList.get(position);
     }
 
     @Override

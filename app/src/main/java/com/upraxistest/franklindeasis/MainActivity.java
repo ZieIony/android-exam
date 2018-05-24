@@ -31,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
     private final static String CACHE_FILE_NAME = "JSONData";
     public static final String EXTRA_PERSON = "person";
 
-    private ArrayList<PersonClass> personClassArrayList = new ArrayList<>();
+    private ArrayList<Person> personArrayList = new ArrayList<>();
     private String JSONData;
 
     @BindView(R.id.listview)
@@ -117,17 +117,17 @@ public class MainActivity extends AppCompatActivity {
                 for (int x = 0; x < jsonArrayPersonList.length(); x++) {
 
                     JSONObject jsonPerson = jsonArrayPersonList.getJSONObject(x);
-                    personClassArrayList.add(convertJSONObjectToPerson(jsonPerson));
+                    personArrayList.add(convertJSONObjectToPerson(jsonPerson));
 
                 }
 
-                final MyAdapter adapter = new MyAdapter(personClassArrayList);
+                final MyAdapter adapter = new MyAdapter(personArrayList);
                 listView.setAdapter(adapter);
 
                 //OnClick of item in List View would navigate the user to a new Activity containing the specific details of the Person selected
                 listView.setOnItemClickListener((parent, view, position, id) -> {
                     Intent myIntent = new Intent(MainActivity.this, PersonDetailsActivity.class);
-                    myIntent.putExtra(EXTRA_PERSON, personClassArrayList.get(position));
+                    myIntent.putExtra(EXTRA_PERSON, personArrayList.get(position));
                     startActivity(myIntent);
                 });
 
@@ -160,8 +160,8 @@ public class MainActivity extends AppCompatActivity {
         return JSONData;
     }
 
-    //Converting JSONObject to PersonClass
-    private PersonClass convertJSONObjectToPerson(JSONObject jsonPerson) throws JSONException {
+    //Converting JSONObject to Person
+    private Person convertJSONObjectToPerson(JSONObject jsonPerson) throws JSONException {
 
         String firstName = jsonPerson.getString("firstname");
         String lastName = jsonPerson.getString("lastname");
@@ -172,7 +172,7 @@ public class MainActivity extends AppCompatActivity {
         String contactPerson = jsonPerson.getString("contactperson");
         String contactPersonMobileNumber = jsonPerson.getString("contactpersonmobilenumber");
 
-        return new PersonClass(firstName,
+        return new Person(firstName,
                 lastName,
                 birthDate,
                 emailAddress,
