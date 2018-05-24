@@ -9,7 +9,7 @@
         android:id="@+id/tv_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        android:textSize="24sp"/>
+        android:layout_margin="@dimen/listItemMargin"
+        android:textSize="@dimen/listTextSize"/>
 
 </LinearLayout>

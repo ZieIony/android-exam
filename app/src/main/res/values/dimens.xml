@@ -1,4 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="small_margin">8dp</dimen>
+    <dimen name="detailsItemMargin">8dp</dimen>
+
+    <dimen name="listTextSize">24sp</dimen>
+    <dimen name="listItemMargin">16dp</dimen>
 </resources>
