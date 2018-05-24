@@ -18,7 +18,7 @@ class DownloadTask extends AsyncTask<String, Void, String> {
 
         String result = "";
         URL url;
-        HttpURLConnection urlConnection = null;
+        HttpURLConnection urlConnection;
 
         try {
 

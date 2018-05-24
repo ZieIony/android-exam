@@ -1,10 +1,9 @@
 package com.upraxistest.franklindeasis;
 
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,7 +19,6 @@ import org.json.JSONObject;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -43,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Log.i("onCreate", "onCreate");
 
-        listView = (ListView) findViewById(R.id.listview);
+        listView = findViewById(R.id.listview);
 
         DownloadTask task = new DownloadTask();
         JSONData = null;
@@ -57,13 +55,13 @@ public class MainActivity extends AppCompatActivity {
 
         File cacheFile = new File(getCacheDir(), CACHE_FILE_NAME);
 
-        if (cacheFile.exists()){
+        if (cacheFile.exists()) {
 
             Log.i("MainActivity", "Load from Cache");
 
             try {
 
-                JSONData = retreiveJSONDatafromCache(cacheFile);
+                JSONData = retrieveJSONDataFromCache(cacheFile);
 
             } catch (IOException e) {
 
@@ -88,7 +86,7 @@ public class MainActivity extends AppCompatActivity {
                 //Retrieve data from URL provided
                 JSONData = task.execute(url).get();
                 //Save JSON to Cache
-                saveJSONDatatoCache(JSONData, cacheFile);
+                saveJSONDataToCache(JSONData, cacheFile);
 
                 loadingDialog.dismiss();
 
@@ -106,21 +104,21 @@ public class MainActivity extends AppCompatActivity {
 
         }
         //If DownloadTask was successful, used .equals() because of String comparison
-        if(!JSONData.equals("Failed")){
+        if (!JSONData.equals("Failed")) {
 
             try {
 
                 JSONArray jsonArrayPersonList = new JSONArray(JSONData);
 
                 //Loop in JSONArray and retrieve Person Objects
-                for(int x = 0; x < jsonArrayPersonList.length(); x++){
+                for (int x = 0; x < jsonArrayPersonList.length(); x++) {
 
                     JSONObject jsonPerson = jsonArrayPersonList.getJSONObject(x);
                     personClassArrayList.add(convertJSONObjectToPerson(jsonPerson));
 
                 }
 
-                final MyAdapter adapter = new MyAdapter(this, personClassArrayList);
+                final MyAdapter adapter = new MyAdapter(personClassArrayList);
                 listView.setAdapter(adapter);
 
                 //OnClick of item in List View would navigate the user to a new Activity containing the specific details of the Person selected
@@ -147,14 +145,14 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void saveJSONDatatoCache(String JSONData, File file) throws IOException {
+    private void saveJSONDataToCache(String JSONData, File file) throws IOException {
         FileOutputStream fileOS = new FileOutputStream(file);
         ObjectOutput out = new ObjectOutputStream(fileOS);
         out.writeObject(JSONData);
         out.close();
     }
 
-    private String retreiveJSONDatafromCache(File file) throws IOException, ClassNotFoundException {
+    private String retrieveJSONDataFromCache(File file) throws IOException, ClassNotFoundException {
         FileInputStream fileIS = new FileInputStream(file);
         ObjectInputStream in = new ObjectInputStream(fileIS);
         String JSONData = (String) in.readObject();
@@ -172,28 +170,23 @@ public class MainActivity extends AppCompatActivity {
         String mobileNumber = jsonPerson.getString("mobilenumber");
         String address = jsonPerson.getString("address");
         String contactPerson = jsonPerson.getString("contactperson");
-        String contectPersonMobileNumber = jsonPerson.getString("contactpersonmobilenumber");
+        String contactPersonMobileNumber = jsonPerson.getString("contactpersonmobilenumber");
 
-        PersonClass person = new PersonClass(firstName,
+        return new PersonClass(firstName,
                 lastName,
                 birthdate,
                 emailAddress,
                 mobileNumber,
                 address,
                 contactPerson,
-                contectPersonMobileNumber);
-
-        return person;
-
+                contactPersonMobileNumber);
     }
 
     private class MyAdapter extends BaseAdapter {
 
-        private Context mContext;
         private ArrayList<PersonClass> personClassArrayList;
 
-        public MyAdapter(Context mContext, ArrayList<PersonClass> personClassArrayList) {
-            this.mContext = mContext;
+        public MyAdapter(ArrayList<PersonClass> personClassArrayList) {
             this.personClassArrayList = personClassArrayList;
         }
 
@@ -205,7 +198,7 @@ public class MainActivity extends AppCompatActivity {
                 convertView = getLayoutInflater().inflate(R.layout.item_person, parent, false);
 
                 //Set the row to display the First and Last Name of the Person
-                TextView tv_name = (TextView) convertView.findViewById(R.id.tv_name);
+                TextView tv_name = convertView.findViewById(R.id.tv_name);
                 String firstName = personClassArrayList.get(position).getFirstName();
                 String lastName = personClassArrayList.get(position).getLastName();
                 tv_name.setText(firstName + " " + lastName);
@@ -230,10 +223,7 @@ public class MainActivity extends AppCompatActivity {
             return 0;
         }
 
-
     }
-
-
 }
 
 

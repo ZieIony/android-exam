@@ -4,16 +4,15 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import java.util.Calendar;
-import java.util.Date;
 
 /**
  * Created by Franklin on 5/22/2018.
  */
 
-public class PersonClass implements Parcelable{
+public class PersonClass implements Parcelable {
     private String firstName;
     private String lastName;
-    private String birthdate;
+    private String birthDate;
     private int age;
     private String emailAddress;
     private String mobileNumber;
@@ -24,7 +23,7 @@ public class PersonClass implements Parcelable{
     public PersonClass(String firstName, String lastName, String birthday, String emailAddress, String mobileNumber, String address, String contactPerson, String contactPersonPhoneNumber) {
         this.firstName = firstName;
         this.lastName = lastName;
-        this.birthdate = birthday;
+        this.birthDate = birthday;
         this.emailAddress = emailAddress;
         this.mobileNumber = mobileNumber;
         this.address = address;
@@ -36,7 +35,7 @@ public class PersonClass implements Parcelable{
     protected PersonClass(Parcel in) {
         firstName = in.readString();
         lastName = in.readString();
-        birthdate = in.readString();
+        birthDate = in.readString();
         age = in.readInt();
         emailAddress = in.readString();
         mobileNumber = in.readString();
@@ -57,18 +56,18 @@ public class PersonClass implements Parcelable{
         }
     };
 
-    public int getAge(){
-        String birthdate = this.birthdate;
-        String[] birthdateStringArray = birthdate.split("-");
-        int month = Integer.parseInt(birthdateStringArray[0]);
-        int day = Integer.parseInt(birthdateStringArray[1]);
-        int year = Integer.parseInt(birthdateStringArray[2]);
+    public int getAge() {
+        String birthDate = this.birthDate;
+        String[] birthDateStringArray = birthDate.split("-");
+        int month = Integer.parseInt(birthDateStringArray[0]);
+        int day = Integer.parseInt(birthDateStringArray[1]);
+        int year = Integer.parseInt(birthDateStringArray[2]);
 
         Calendar now = Calendar.getInstance();
         Calendar dateOfBirth = Calendar.getInstance();
         dateOfBirth.set(Calendar.YEAR, year);
         //CALENDAR.JANUARY = 0 and CALENDAR.DECEMBER = 11, so deduct 1
-        dateOfBirth.set(Calendar.MONTH, month-1);
+        dateOfBirth.set(Calendar.MONTH, month - 1);
         dateOfBirth.set(Calendar.DAY_OF_MONTH, day);
 
         if (dateOfBirth.after(now)) {
@@ -100,7 +99,7 @@ public class PersonClass implements Parcelable{
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(firstName);
         dest.writeString(lastName);
-        dest.writeString(birthdate);
+        dest.writeString(birthDate);
         dest.writeInt(age);
         dest.writeString(emailAddress);
         dest.writeString(mobileNumber);
@@ -113,7 +112,7 @@ public class PersonClass implements Parcelable{
     public String toString() {
         return firstName + " "
                 + lastName + " "
-                + birthdate + " "
+                + birthDate + " "
                 + emailAddress + " "
                 + mobileNumber + " "
                 + address + " "
@@ -129,8 +128,8 @@ public class PersonClass implements Parcelable{
         return lastName;
     }
 
-    public String getBirthdate() {
-        return birthdate;
+    public String getBirthDate() {
+        return birthDate;
     }
 
     public String getEmailAddress() {
@@ -161,8 +160,8 @@ public class PersonClass implements Parcelable{
         this.lastName = lastName;
     }
 
-    public void setBirthdate(String birthdate) {
-        this.birthdate = birthdate;
+    public void setBirthDate(String birthDate) {
+        this.birthDate = birthDate;
     }
 
     public void setAge(int age) {
@@ -188,6 +187,4 @@ public class PersonClass implements Parcelable{
     public void setContactPersonPhoneNumber(String contactPersonPhoneNumber) {
         this.contactPersonPhoneNumber = contactPersonPhoneNumber;
     }
-
-
 }

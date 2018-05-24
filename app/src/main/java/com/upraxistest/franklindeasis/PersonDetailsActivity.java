@@ -10,7 +10,7 @@ import android.widget.TextView;
  * Created by Franklin on 5/22/2018.
  */
 
-public class PersonDetailsActivity  extends AppCompatActivity{
+public class PersonDetailsActivity extends AppCompatActivity {
 
     TextView tv_firstname, tv_lastname, tv_birthdate, tv_age, tv_emailaddress, tv_mobilenumber, tv_address, tv_contactperson, tv_contactpersonmobilenumber;
 
@@ -20,25 +20,25 @@ public class PersonDetailsActivity  extends AppCompatActivity{
 
         setContentView(R.layout.activity_person_details);
 
-        tv_firstname = (TextView) findViewById(R.id.tv_firstname);
-        tv_lastname = (TextView) findViewById(R.id.tv_lastname);
-        tv_age = (TextView) findViewById(R.id.tv_age);
-        tv_birthdate= (TextView) findViewById(R.id.tv_birthdate);
-        tv_emailaddress = (TextView) findViewById(R.id.tv_emailaddress);
-        tv_address= (TextView) findViewById(R.id.tv_address);
-        tv_mobilenumber= (TextView) findViewById(R.id.tv_mobilenumber);
-        tv_contactperson = (TextView) findViewById(R.id.tv_contactperson);
-        tv_contactpersonmobilenumber= (TextView) findViewById(R.id.tv_contactpersonmobilenumber);
+        tv_firstname = findViewById(R.id.tv_firstname);
+        tv_lastname = findViewById(R.id.tv_lastname);
+        tv_age = findViewById(R.id.tv_age);
+        tv_birthdate = findViewById(R.id.tv_birthdate);
+        tv_emailaddress = findViewById(R.id.tv_emailaddress);
+        tv_address = findViewById(R.id.tv_address);
+        tv_mobilenumber = findViewById(R.id.tv_mobilenumber);
+        tv_contactperson = findViewById(R.id.tv_contactperson);
+        tv_contactpersonmobilenumber = findViewById(R.id.tv_contactpersonmobilenumber);
 
         //Get Person Data from Source Activity
         Bundle data = getIntent().getExtras();
-        PersonClass person = (PersonClass) data.getParcelable("person");
+        PersonClass person = data.getParcelable("person");
 
         //For simplicity I used the same TextView and just appended the value
         tv_firstname.setText(tv_firstname.getText() + person.getFirstName());
         tv_lastname.setText(tv_lastname.getText() + person.getLastName());
         tv_age.setText(tv_age.getText() + String.valueOf(person.getAge()));
-        tv_birthdate.setText(tv_birthdate.getText() + person.getBirthdate());
+        tv_birthdate.setText(tv_birthdate.getText() + person.getBirthDate());
         tv_emailaddress.setText(tv_emailaddress.getText() + person.getEmailAddress());
         tv_mobilenumber.setText(tv_mobilenumber.getText() + person.getMobileNumber());
         tv_address.setText(tv_address.getText() + person.getAddress());
@@ -47,7 +47,7 @@ public class PersonDetailsActivity  extends AppCompatActivity{
 
     }
 
-    public void backPress(View v){
+    public void backPress(View v) {
         this.onBackPressed();
     }
 
