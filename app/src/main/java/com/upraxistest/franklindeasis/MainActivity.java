@@ -9,9 +9,9 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.widget.Toast;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -33,7 +33,6 @@ public class MainActivity extends AppCompatActivity {
     public static final String EXTRA_PERSON = "person";
 
     private ArrayList<Person> personArrayList = new ArrayList<>();
-    private String JSONData = null;
     File cacheFile;
 
     @BindView(R.id.recyclerView)
@@ -43,6 +42,8 @@ public class MainActivity extends AppCompatActivity {
     SwipeRefreshLayout swipeRefreshLayout;
 
     DownloadTask task = new DownloadTask();
+
+    Gson gson;
 
     //I manually generated this JSON file from http://myjson.com/
     String url = "https://api.myjson.com/bins/142e2y";
@@ -55,11 +56,19 @@ public class MainActivity extends AppCompatActivity {
 
         Log.i("onCreate", "onCreate");
 
+        initGson();
+
         cacheFile = new File(getCacheDir(), CACHE_FILE_NAME);
 
         swipeRefreshLayout.setOnRefreshListener(this::loadData);
 
         initData();
+    }
+
+    private void initGson() {
+        GsonBuilder builder = new GsonBuilder();
+        builder.setFieldNamingStrategy(field -> field.getName().toLowerCase());
+        gson = builder.create();
     }
 
     private void initData() {
@@ -69,8 +78,8 @@ public class MainActivity extends AppCompatActivity {
 
             try {
 
-                JSONData = retrieveJSONDataFromCache(cacheFile);
-                setupData();
+                String JSONData = retrieveJSONDataFromCache(cacheFile);
+                setupData(JSONData);
 
             } catch (IOException e) {
                 e.printStackTrace();
@@ -92,12 +101,18 @@ public class MainActivity extends AppCompatActivity {
             swipeRefreshLayout.setRefreshing(true);
 
             //Retrieve data from URL provided
-            JSONData = task.execute(url).get();
+            String jsonData = task.execute(url).get();
             //Save JSON to Cache
-            saveJSONDataToCache(JSONData, cacheFile);
+            saveJSONDataToCache(jsonData, cacheFile);
 
             swipeRefreshLayout.setRefreshing(false);
 
+            //If DownloadTask was successful, used .equals() because of String comparison
+            if (!jsonData.equals("Failed")) {
+                setupData(jsonData);
+            } else {
+                Toast.makeText(this, "Failed while loading Person List", Toast.LENGTH_SHORT).show();
+            }
 
         } catch (InterruptedException e) {
             e.printStackTrace();
@@ -106,42 +121,19 @@ public class MainActivity extends AppCompatActivity {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-        //If DownloadTask was successful, used .equals() because of String comparison
-        if (!JSONData.equals("Failed")) {
-            setupData();
-        } else {
-            Toast.makeText(this, "Failed while loading Person List", Toast.LENGTH_SHORT).show();
-        }
     }
 
-    private void setupData() {
-        try {
+    private void setupData(String jsonData) {
+        personArrayList = gson.fromJson(jsonData, new TypeToken<ArrayList<Person>>() {
+        }.getType());
 
-            JSONArray jsonArrayPersonList = new JSONArray(JSONData);
-
-            //Loop in JSONArray and retrieve Person Objects
-            for (int x = 0; x < jsonArrayPersonList.length(); x++) {
-
-                JSONObject jsonPerson = jsonArrayPersonList.getJSONObject(x);
-                personArrayList.add(convertJSONObjectToPerson(jsonPerson));
-
-            }
-
-            final MyAdapter adapter = new MyAdapter(personArrayList, (person) -> {
-                Intent myIntent = new Intent(MainActivity.this, PersonDetailsActivity.class);
-                myIntent.putExtra(EXTRA_PERSON, person);
-                startActivity(myIntent);
-            });
-            recyclerView.setLayoutManager(new LinearLayoutManager(this));
-            recyclerView.setAdapter(adapter);
-
-        } catch (JSONException e) {
-
-            e.printStackTrace();
-            Log.e("JSONException", e.toString());
-
-        }
+        final MyAdapter adapter = new MyAdapter(personArrayList, (person) -> {
+            Intent myIntent = new Intent(MainActivity.this, PersonDetailsActivity.class);
+            myIntent.putExtra(EXTRA_PERSON, person);
+            startActivity(myIntent);
+        });
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setAdapter(adapter);
     }
 
     private void saveJSONDataToCache(String JSONData, File file) throws IOException {
@@ -157,28 +149,6 @@ public class MainActivity extends AppCompatActivity {
         String JSONData = (String) in.readObject();
         in.close();
         return JSONData;
-    }
-
-    //Converting JSONObject to Person
-    private Person convertJSONObjectToPerson(JSONObject jsonPerson) throws JSONException {
-
-        String firstName = jsonPerson.getString("firstname");
-        String lastName = jsonPerson.getString("lastname");
-        String birthDate = jsonPerson.getString("birthdate");
-        String emailAddress = jsonPerson.getString("emailadd");
-        String mobileNumber = jsonPerson.getString("mobilenumber");
-        String address = jsonPerson.getString("address");
-        String contactPerson = jsonPerson.getString("contactperson");
-        String contactPersonMobileNumber = jsonPerson.getString("contactpersonmobilenumber");
-
-        return new Person(firstName,
-                lastName,
-                birthDate,
-                emailAddress,
-                mobileNumber,
-                address,
-                contactPerson,
-                contactPersonMobileNumber);
     }
 
 }

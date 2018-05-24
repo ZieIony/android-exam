@@ -63,6 +63,6 @@ public class PersonDetailsActivity extends AppCompatActivity {
         tv_mobileNumber.setText(getResources().getString(R.string.mobile_number, person.mobileNumber));
         tv_address.setText(getResources().getString(R.string.address, person.address));
         tv_contactPerson.setText(getResources().getString(R.string.contact_person, person.contactPerson));
-        tv_contactPersonMobileNumber.setText(getResources().getString(R.string.contact_person_number, person.contactPersonPhoneNumber));
+        tv_contactPersonMobileNumber.setText(getResources().getString(R.string.contact_person_number, person.contactPersonMobileNumber));
     }
 }

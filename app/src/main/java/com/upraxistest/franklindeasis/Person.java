@@ -19,9 +19,9 @@ public class Person implements Serializable {
     public String mobileNumber;
     public String address;
     public String contactPerson;
-    public String contactPersonPhoneNumber;
+    public String contactPersonMobileNumber;
 
-    public Person(String firstName, String lastName, String birthday, String emailAddress, String mobileNumber, String address, String contactPerson, String contactPersonPhoneNumber) {
+    public Person(String firstName, String lastName, String birthday, String emailAddress, String mobileNumber, String address, String contactPerson, String contactPersonMobileNumber) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.birthDate = birthday;
@@ -29,7 +29,7 @@ public class Person implements Serializable {
         this.mobileNumber = mobileNumber;
         this.address = address;
         this.contactPerson = contactPerson;
-        this.contactPersonPhoneNumber = contactPersonPhoneNumber;
+        this.contactPersonMobileNumber = contactPersonMobileNumber;
         age = initAge();
     }
 
