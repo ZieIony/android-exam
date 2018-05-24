@@ -1,8 +1,8 @@
 package com.upraxistest.franklindeasis;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -33,10 +33,19 @@ public class MainActivity extends AppCompatActivity {
     public static final String EXTRA_PERSON = "person";
 
     private ArrayList<Person> personArrayList = new ArrayList<>();
-    private String JSONData;
+    private String JSONData = null;
+    File cacheFile;
 
     @BindView(R.id.recyclerView)
     RecyclerView recyclerView;
+
+    @BindView(R.id.swipeRefresh)
+    SwipeRefreshLayout swipeRefreshLayout;
+
+    DownloadTask task = new DownloadTask();
+
+    //I manually generated this JSON file from http://myjson.com/
+    String url = "https://api.myjson.com/bins/142e2y";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,19 +55,14 @@ public class MainActivity extends AppCompatActivity {
 
         Log.i("onCreate", "onCreate");
 
+        cacheFile = new File(getCacheDir(), CACHE_FILE_NAME);
 
-        DownloadTask task = new DownloadTask();
-        JSONData = null;
+        swipeRefreshLayout.setOnRefreshListener(this::loadData);
 
-        /*
-            This program assumes that all data retrieved from the URL are correctly formatted and has no invalid data
-         */
+        initData();
+    }
 
-        //I manually generated this JSON file from http://myjson.com/
-        String url = "https://api.myjson.com/bins/142e2y";
-
-        File cacheFile = new File(getCacheDir(), CACHE_FILE_NAME);
-
+    private void initData() {
         if (cacheFile.exists()) {
 
             Log.i("MainActivity", "Load from Cache");
@@ -66,80 +70,76 @@ public class MainActivity extends AppCompatActivity {
             try {
 
                 JSONData = retrieveJSONDataFromCache(cacheFile);
+                setupData();
 
             } catch (IOException e) {
-
                 e.printStackTrace();
-
             } catch (ClassNotFoundException e) {
-
                 e.printStackTrace();
-
             }
 
         } else {
 
-            Log.i("MainActivity", "Load from Internet");
-
-            try {
-
-                ProgressDialog loadingDialog = new ProgressDialog(this);
-                loadingDialog.show();
-                loadingDialog.setTitle("Loading Person list");
-
-                //Retrieve data from URL provided
-                JSONData = task.execute(url).get();
-                //Save JSON to Cache
-                saveJSONDataToCache(JSONData, cacheFile);
-
-                loadingDialog.dismiss();
-
-            } catch (InterruptedException e) {
-
-                e.printStackTrace();
-
-            } catch (ExecutionException e) {
-
-                e.printStackTrace();
-
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
+            loadData();
         }
+    }
+
+    private void loadData() {
+        Log.i("MainActivity", "Load from Internet");
+
+        try {
+
+            swipeRefreshLayout.setRefreshing(true);
+
+            //Retrieve data from URL provided
+            JSONData = task.execute(url).get();
+            //Save JSON to Cache
+            saveJSONDataToCache(JSONData, cacheFile);
+
+            swipeRefreshLayout.setRefreshing(false);
+
+
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
         //If DownloadTask was successful, used .equals() because of String comparison
         if (!JSONData.equals("Failed")) {
+            setupData();
+        } else {
+            Toast.makeText(this, "Failed while loading Person List", Toast.LENGTH_SHORT).show();
+        }
+    }
 
-            try {
+    private void setupData() {
+        try {
 
-                JSONArray jsonArrayPersonList = new JSONArray(JSONData);
+            JSONArray jsonArrayPersonList = new JSONArray(JSONData);
 
-                //Loop in JSONArray and retrieve Person Objects
-                for (int x = 0; x < jsonArrayPersonList.length(); x++) {
+            //Loop in JSONArray and retrieve Person Objects
+            for (int x = 0; x < jsonArrayPersonList.length(); x++) {
 
-                    JSONObject jsonPerson = jsonArrayPersonList.getJSONObject(x);
-                    personArrayList.add(convertJSONObjectToPerson(jsonPerson));
-
-                }
-
-                final MyAdapter adapter = new MyAdapter(personArrayList, (person) -> {
-                    Intent myIntent = new Intent(MainActivity.this, PersonDetailsActivity.class);
-                    myIntent.putExtra(EXTRA_PERSON, person);
-                    startActivity(myIntent);
-                });
-                recyclerView.setLayoutManager(new LinearLayoutManager(this));
-                recyclerView.setAdapter(adapter);
-
-            } catch (JSONException e) {
-
-                e.printStackTrace();
-                Log.e("JSONException", e.toString());
+                JSONObject jsonPerson = jsonArrayPersonList.getJSONObject(x);
+                personArrayList.add(convertJSONObjectToPerson(jsonPerson));
 
             }
 
-        } else {
+            final MyAdapter adapter = new MyAdapter(personArrayList, (person) -> {
+                Intent myIntent = new Intent(MainActivity.this, PersonDetailsActivity.class);
+                myIntent.putExtra(EXTRA_PERSON, person);
+                startActivity(myIntent);
+            });
+            recyclerView.setLayoutManager(new LinearLayoutManager(this));
+            recyclerView.setAdapter(adapter);
 
-            Toast.makeText(this, "Failed while loading Person List", Toast.LENGTH_SHORT).show();
+        } catch (JSONException e) {
+
+            e.printStackTrace();
+            Log.e("JSONException", e.toString());
 
         }
     }
