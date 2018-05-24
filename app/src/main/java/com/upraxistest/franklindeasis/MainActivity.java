@@ -4,8 +4,9 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.widget.ListView;
 import android.widget.Toast;
 
 import org.json.JSONArray;
@@ -34,8 +35,8 @@ public class MainActivity extends AppCompatActivity {
     private ArrayList<Person> personArrayList = new ArrayList<>();
     private String JSONData;
 
-    @BindView(R.id.listview)
-    ListView listView;
+    @BindView(R.id.recyclerView)
+    RecyclerView recyclerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -121,15 +122,13 @@ public class MainActivity extends AppCompatActivity {
 
                 }
 
-                final MyAdapter adapter = new MyAdapter(personArrayList);
-                listView.setAdapter(adapter);
-
-                //OnClick of item in List View would navigate the user to a new Activity containing the specific details of the Person selected
-                listView.setOnItemClickListener((parent, view, position, id) -> {
+                final MyAdapter adapter = new MyAdapter(personArrayList, (person) -> {
                     Intent myIntent = new Intent(MainActivity.this, PersonDetailsActivity.class);
-                    myIntent.putExtra(EXTRA_PERSON, personArrayList.get(position));
+                    myIntent.putExtra(EXTRA_PERSON, person);
                     startActivity(myIntent);
                 });
+                recyclerView.setLayoutManager(new LinearLayoutManager(this));
+                recyclerView.setAdapter(adapter);
 
             } catch (JSONException e) {
 
