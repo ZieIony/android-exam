@@ -5,8 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -119,13 +117,10 @@ public class MainActivity extends AppCompatActivity {
                 listView.setAdapter(adapter);
 
                 //OnClick of item in List View would navigate the user to a new Activity containing the specific details of the Person selected
-                listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                        Intent myIntent = new Intent(MainActivity.this, PersonDetailsActivity.class);
-                        myIntent.putExtra("person", personClassArrayList.get(position));
-                        startActivity(myIntent);
-                    }
+                listView.setOnItemClickListener((parent, view, position, id) -> {
+                    Intent myIntent = new Intent(MainActivity.this, PersonDetailsActivity.class);
+                    myIntent.putExtra("person", personClassArrayList.get(position));
+                    startActivity(myIntent);
                 });
 
             } catch (JSONException e) {
