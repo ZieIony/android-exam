@@ -6,11 +6,8 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.BaseAdapter;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import org.json.JSONArray;
@@ -182,48 +179,6 @@ public class MainActivity extends AppCompatActivity {
                 contactPersonMobileNumber);
     }
 
-    private class MyAdapter extends BaseAdapter {
-
-        private ArrayList<PersonClass> personClassArrayList;
-
-        public MyAdapter(ArrayList<PersonClass> personClassArrayList) {
-            this.personClassArrayList = personClassArrayList;
-        }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-
-            if (convertView == null) {
-
-                convertView = getLayoutInflater().inflate(R.layout.item_person, parent, false);
-
-                //Set the row to display the First and Last Name of the Person
-                TextView tv_name = convertView.findViewById(R.id.tv_name);
-                String firstName = personClassArrayList.get(position).getFirstName();
-                String lastName = personClassArrayList.get(position).getLastName();
-                tv_name.setText(firstName + " " + lastName);
-
-            }
-            return convertView;
-
-        }
-
-        @Override
-        public int getCount() {
-            return personClassArrayList.size();
-        }
-
-        @Override
-        public Object getItem(int position) {
-            return personClassArrayList.get(position);
-        }
-
-        @Override
-        public long getItemId(int position) {
-            return 0;
-        }
-
-    }
 }
 
 
