@@ -9,10 +9,6 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.reflect.TypeToken;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -32,7 +28,6 @@ public class MainActivity extends AppCompatActivity {
     private final static String CACHE_FILE_NAME = "JSONData";
     public static final String EXTRA_PERSON = "person";
 
-    private ArrayList<Person> personArrayList = new ArrayList<>();
     File cacheFile;
 
     @BindView(R.id.recyclerView)
@@ -42,8 +37,6 @@ public class MainActivity extends AppCompatActivity {
     SwipeRefreshLayout swipeRefreshLayout;
 
     DownloadTask task;
-
-    Gson gson;
 
     MyApi api;
 
@@ -55,7 +48,6 @@ public class MainActivity extends AppCompatActivity {
 
         Log.i("onCreate", "onCreate");
 
-        initGson();
         api = new MyApi();
         task = new DownloadTask(api);
 
@@ -66,12 +58,6 @@ public class MainActivity extends AppCompatActivity {
         initData();
     }
 
-    private void initGson() {
-        GsonBuilder builder = new GsonBuilder();
-        builder.setFieldNamingStrategy(field -> field.getName().toLowerCase());
-        gson = builder.create();
-    }
-
     private void initData() {
         if (cacheFile.exists()) {
 
@@ -79,8 +65,8 @@ public class MainActivity extends AppCompatActivity {
 
             try {
 
-                String JSONData = retrieveJSONDataFromCache(cacheFile);
-                setupData(JSONData);
+                ArrayList<Person> list = retrieveDataFromCache(cacheFile);
+                setupData(list);
 
             } catch (IOException e) {
                 e.printStackTrace();
@@ -102,15 +88,14 @@ public class MainActivity extends AppCompatActivity {
             swipeRefreshLayout.setRefreshing(true);
 
             //Retrieve data from URL provided
-            String jsonData = task.execute().get();
-            //Save JSON to Cache
-            saveJSONDataToCache(jsonData, cacheFile);
+            ArrayList<Person> personArrayList = task.execute().get();
 
             swipeRefreshLayout.setRefreshing(false);
 
-            //If DownloadTask was successful, used .equals() because of String comparison
-            if (!jsonData.equals("Failed")) {
-                setupData(jsonData);
+            if (personArrayList !=null) {
+                //Save JSON to Cache
+                saveDataToCache(personArrayList, cacheFile);
+                setupData(personArrayList);
             } else {
                 Toast.makeText(this, "Failed while loading Person List", Toast.LENGTH_SHORT).show();
             }
@@ -124,10 +109,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void setupData(String jsonData) {
-        personArrayList = gson.fromJson(jsonData, new TypeToken<ArrayList<Person>>() {
-        }.getType());
-
+    private void setupData(ArrayList<Person> personArrayList) {
         final MyAdapter adapter = new MyAdapter(personArrayList, (person) -> {
             Intent myIntent = new Intent(MainActivity.this, PersonDetailsActivity.class);
             myIntent.putExtra(EXTRA_PERSON, person);
@@ -137,19 +119,19 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
     }
 
-    private void saveJSONDataToCache(String JSONData, File file) throws IOException {
+    private void saveDataToCache(ArrayList<Person> list, File file) throws IOException {
         FileOutputStream fileOS = new FileOutputStream(file);
         ObjectOutput out = new ObjectOutputStream(fileOS);
-        out.writeObject(JSONData);
+        out.writeObject(list);
         out.close();
     }
 
-    private String retrieveJSONDataFromCache(File file) throws IOException, ClassNotFoundException {
+    private ArrayList<Person> retrieveDataFromCache(File file) throws IOException, ClassNotFoundException {
         FileInputStream fileIS = new FileInputStream(file);
         ObjectInputStream in = new ObjectInputStream(fileIS);
-        String JSONData = (String) in.readObject();
+        ArrayList<Person> list = (ArrayList<Person>) in.readObject();
         in.close();
-        return JSONData;
+        return list;
     }
 
 }

@@ -1,6 +1,10 @@
 package com.upraxistest.franklindeasis;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
 import java.io.IOException;
+import java.util.ArrayList;
 
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -12,16 +16,20 @@ public class MyApi {
 
     private final MyService service;
 
-    public MyApi(){
+    public MyApi() {
+        Gson gson = new GsonBuilder()
+                .setFieldNamingStrategy(field -> field.getName().toLowerCase())
+                .create();
+
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(url)
-                .addConverterFactory(GsonConverterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create(gson))
                 .build();
 
         service = retrofit.create(MyService.class);
     }
 
-    public String getData() throws IOException {
+    public ArrayList<Person> getData() throws IOException {
         return service.getData().execute().body();
     }
 }

@@ -2,11 +2,13 @@ package com.upraxistest.franklindeasis;
 
 import android.os.AsyncTask;
 
+import java.util.ArrayList;
+
 /**
  * Created by Franklin on 5/22/2018.
  */
 
-class DownloadTask extends AsyncTask<String, Void, String> {
+class DownloadTask extends AsyncTask<String, Void, ArrayList<Person>> {
 
     private MyApi api;
 
@@ -15,12 +17,12 @@ class DownloadTask extends AsyncTask<String, Void, String> {
     }
 
     @Override
-    protected String doInBackground(String... urls) {
+    protected ArrayList<Person> doInBackground(String... urls) {
         try {
             return api.getData();
         } catch (Exception e) {
             e.printStackTrace();
-            return "Failed";
+            return null;
         }
     }
 }
