@@ -50,17 +50,17 @@ public class PersonDetailsActivity extends AppCompatActivity {
 
         //Get Person Data from Source Activity
         Bundle data = getIntent().getExtras();
-        PersonClass person = data.getParcelable("person");
+        PersonClass person = (PersonClass) data.getSerializable("person");
 
         //For simplicity I used the same TextView and just appended the value
-        tv_firstName.setText(tv_firstName.getText() + person.getFirstName());
-        tv_lastName.setText(tv_lastName.getText() + person.getLastName());
-        tv_age.setText(tv_age.getText() + String.valueOf(person.getAge()));
-        tv_birthDate.setText(tv_birthDate.getText() + person.getBirthDate());
-        tv_emailAddress.setText(tv_emailAddress.getText() + person.getEmailAddress());
-        tv_mobileNumber.setText(tv_mobileNumber.getText() + person.getMobileNumber());
-        tv_address.setText(tv_address.getText() + person.getAddress());
-        tv_contactPerson.setText(tv_contactPerson.getText() + person.getContactPerson());
-        tv_contactPersonMobileNumber.setText(tv_contactPersonMobileNumber.getText() + person.getContactPersonPhoneNumber());
+        tv_firstName.setText(tv_firstName.getText() + person.firstName);
+        tv_lastName.setText(tv_lastName.getText() + person.lastName);
+        tv_age.setText(tv_age.getText() + String.valueOf(person.age));
+        tv_birthDate.setText(tv_birthDate.getText() + person.birthDate);
+        tv_emailAddress.setText(tv_emailAddress.getText() + person.emailAddress);
+        tv_mobileNumber.setText(tv_mobileNumber.getText() + person.mobileNumber);
+        tv_address.setText(tv_address.getText() + person.address);
+        tv_contactPerson.setText(tv_contactPerson.getText() + person.contactPerson);
+        tv_contactPersonMobileNumber.setText(tv_contactPersonMobileNumber.getText() + person.contactPersonPhoneNumber);
     }
 }

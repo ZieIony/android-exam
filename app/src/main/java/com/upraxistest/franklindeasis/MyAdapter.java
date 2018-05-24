@@ -25,8 +25,8 @@ class MyAdapter extends BaseAdapter {
 
             //Set the row to display the First and Last Name of the Person
             TextView tv_name = convertView.findViewById(R.id.tv_name);
-            String firstName = personClassArrayList.get(position).getFirstName();
-            String lastName = personClassArrayList.get(position).getLastName();
+            String firstName = personClassArrayList.get(position).firstName;
+            String lastName = personClassArrayList.get(position).lastName;
             tv_name.setText(firstName + " " + lastName);
 
         }
